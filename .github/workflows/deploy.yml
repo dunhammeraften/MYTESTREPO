@@ -1,12 +1,12 @@
-name: Salesforce CI/CD
+name: Deploy to Salesforce
 
 on:
   push:
     branches:
-      - main
+      - main  # Skift til din aktuelle branch, hvis nødvendigt
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,16 +15,18 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          npm install --global sfdx-cli
-          sfdx --version
+          npm install --global @salesforce/cli
+          sf --version
 
       - name: Authenticate with Salesforce
-        env:
-          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
-        run: |
-          echo $SFDX_AUTH_URL > ./sfdx_auth.txt
-          sfdx auth:sfdxurl:store -f ./sfdx_auth.txt -a DevOrg
+        run: sf org login sfdx-url --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
 
-      - name: Deploy to Salesforce
-        run: |
-          sfdx force:source:deploy -u DevOrg -p force-app
+      - name: Deploy metadata to Salesforce
+        run: sf project deploy start --source-dir force-app --use-most-recent
+
+      - name: Run tests
+        run: sf apex run test --result-format human --code-coverage --output-dir test-results
+
+      - name: Logout from Salesforce
+        if: always()
+        run: sf org logout --all
