@@ -3,7 +3,7 @@ name: Deploy to Salesforce
 on:
   push:
     branches:
-      - main  # Skift til din aktuelle branch, hvis nødvendigt
+      - master  # Skift til din aktuelle branch, hvis nødvendigt
 
 jobs:
   deploy:
