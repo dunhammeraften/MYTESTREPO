@@ -13,21 +13,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli
 
-      - name: Verify Salesforce CLI installation
-        run: sf version
-
-      - name: Authenticate with Salesforce
-        run: sf org login sfdx-url --sfdx-url-file <(echo "$SFDX_AUTH_URL")
+      - name: Authenticate with Salesforce using JWT
+        run: |
+          sf auth:jwt:grant --client-id 3MVG9PwZx9R6_UrfD59qSAXTmVLhVqFvcLxDt9GfJXQJ4OM5Fwn9fieg1xWAh0Lm0iR4yNm6Lfctw6K6LCb8J \
+                            --jwt-key-file <(echo "$JWT_PRIVATE_KEY") \
+                            --username esbhovg1980@gmail.com \
+                            --instance-url https://login.salesforce.com
         env:
-          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
 
       - name: Deploy metadata
-        run: sf project deploy start --target-org DevOrg
+        run: sf project deploy start --target-org esbhovg1980@gmail.com
