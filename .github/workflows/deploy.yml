@@ -15,8 +15,8 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          curl -sL https://developer.salesforce.com/media/salesforce-cli/sf/install | bash
-          sf version
+          npm install --global sfdx-cli
+          sfdx --version
 
       - name: Authenticate with Salesforce
         run: sf org login sfdx-url --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
