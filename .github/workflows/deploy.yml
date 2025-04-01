@@ -18,12 +18,12 @@ jobs:
 
       - name: Authenticate with Salesforce using JWT
         run: |
-          sf auth:jwt:grant --client-id <ConsumerKey> \
+          sf auth:jwt:grant --client-id 3MVG9PwZx9R6_UrfD59qSAXTmVIdKp6IeKNdEJSB3eQ4mhJjFhGgEkK8hy0Inu6u4u7XlXSeTHY16aKiNMT2V \
                             --jwt-key-file <(echo "$JWT_PRIVATE_KEY") \
-                            --username <SalesforceUsername> \
-                            --instance-url https://test.salesforce.com
+                            --username esbhovg1980@gmail.com \
+                            --instance-url https://almbrand7-dev-ed.develop.my.salesforce.com
         env:
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
 
       - name: Deploy metadata
-        run: sf project deploy start --target-org <SalesforceUsername>
+        run: sf project deploy start --target-org esbhovg1980@gmail.com
