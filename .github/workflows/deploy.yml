@@ -13,15 +13,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
       - name: Install Salesforce CLI
-        run: |
-          npm install --global sfdx-cli
-          sfdx --version
+        run: npm install --global @salesforce/cli
+
+      - name: Verify Salesforce CLI installation
+        run: sf version
 
       - name: Authenticate with Salesforce
-        run: sf org login sfdx-url --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
-        env: 
+        run: sf org login sfdx-url --sfdx-url-file <(echo "$SFDX_AUTH_URL")
+        env:
           SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
-          
+
       - name: Deploy metadata
         run: sf project deploy start --target-org DevOrg
