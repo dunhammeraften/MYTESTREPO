@@ -29,5 +29,10 @@ jobs:
         env:
           SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
 
+      - name: Debug SFDX_AUTH_URL
+        run: echo "$SFDX_AUTH_URL" | sed 's/./& /g'
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+
       - name: Deploy metadata
         run: sf project deploy start --target-org DevOrg
