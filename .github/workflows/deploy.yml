@@ -21,7 +21,7 @@ jobs:
           sf auth:jwt:grant --client-id 3MVG9PwZx9R6_UrfD59qSAXTmVLhVqFvcLxDt9GfJXQJ4OM5Fwn9fieg1xWAh0Lm0iR4yNm6Lfctw6K6LCb8J \
                             --jwt-key-file <(echo "$JWT_PRIVATE_KEY") \
                             --username esbhovg1980@gmail.com \
-                            --instance-url https://almbrand7-dev-ed.develop.my.salesforce.com
+                            --instance-url https://login.salesforce.com
         env:
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
 
