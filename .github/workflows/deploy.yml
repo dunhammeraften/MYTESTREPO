@@ -3,7 +3,7 @@ name: Deploy to Salesforce
 on:
   push:
     branches:
-      - master  # Skift til din aktuelle branch, hvis nødvendigt
+      - master
 
 jobs:
   deploy:
@@ -13,20 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Salesforce CLI
-        run: |
-          npm install --global @salesforce/cli
-          sf --version
-
       - name: Authenticate with Salesforce
         run: sf org login sfdx-url --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
-
-      - name: Deploy metadata to Salesforce
-        run: sf project deploy start --source-dir force-app --use-most-recent
-
-      - name: Run tests
-        run: sf apex run test --result-format human --code-coverage --output-dir test-results
-
-      - name: Logout from Salesforce
-        if: always()
-        run: sf org logout --all
+        env: 
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+          
+      - name: Deploy metadata
+        run: sf project deploy start --target-org DevOrg
